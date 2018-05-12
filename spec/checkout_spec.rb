@@ -98,6 +98,31 @@ describe Checkout do
 
   describe "#total" do
 
+    let(:checkout) do
+      Checkout.new(promotional_rules)
+    end
+
+    it 'should have a total of £66.78 for basket 1' do
+      basket1.each do |item|
+        checkout.scan(item)
+      end
+      expect(checkout.total).to eq '£66.78'
+    end
+
+    it 'should have a total of £36.95 for basket 2' do
+      basket2.each do |item|
+        checkout.scan(item)
+      end
+      expect(checkout.total).to eq '£36.95'
+    end
+
+    it 'should have a total of £73.76 for basket 3' do
+      basket3.each do |item|
+        checkout.scan(item)
+      end
+      expect(checkout.total).to eq '£73.76'
+    end
+
   end #end #total
 
 end
