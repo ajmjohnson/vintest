@@ -12,6 +12,4 @@ class Product
     raise(ArgumentError, 'name must be set') if name == ''
     raise(ArgumentError, 'price must greater than zero') if price <= 0
   end
-
-
 end

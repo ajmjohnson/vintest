@@ -22,7 +22,6 @@ describe Product do
     end
 
     context "when values are not set" do
-
       it "should raise an error if no code is set" do
         expect{Product.new('', 'Chair', 0.0)}.to raise_error ArgumentError, 'code must be set'
       end
@@ -38,7 +37,6 @@ describe Product do
       it "should raise an error if price is less than zero" do
         expect{Product.new('001', 'Chair', -1)}.to raise_error ArgumentError, 'price must greater than zero'
       end
-
     end
 
   end # end .new
