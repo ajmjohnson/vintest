@@ -8,4 +8,9 @@ class Checkout
     @promotions = promotions
   end
 
+  def scan(item)
+    raise ArgumentError, 'Scanned item is not a Product' unless item.is_a?(Product)
+    @scanned_items << item
+  end
+
 end

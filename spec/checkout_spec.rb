@@ -2,16 +2,43 @@ require 'checkout'
 
 describe Checkout do
 
+  #PROMOTIONS
   let(:line_item_promotion) do
     MultiBuyLineItemPromotion.new('001', 2, -0.75)
   end
 
-  # let(:order_total_promotion) do
-  #   OrderTotalPromotion.new(60,10)
-  # end
+  let(:order_total_promotion) do
+    OrderTotalPromotion.new(60,10)
+  end
 
   let(:promotional_rules) do
-    [line_item_promotion]
+    [line_item_promotion, order_total_promotion]
+  end
+
+  #PRODUCTS
+  let(:product1) do
+    Product.new('001', 'Very Cheap Chair', 9.25)
+  end
+
+  let(:product2) do
+    Product.new('002', 'Little Table', 45.00)
+  end
+
+  let(:product3) do
+    Product.new('003', 'Funky Light', 19.95)
+  end
+
+  # BASKETS
+  let(:basket1) do
+    [product1, product2, product3]
+  end
+
+  let(:basket2) do
+    [product1, product3, product1]
+  end
+
+  let(:basket3) do
+    [product1, product2, product1, product3]
   end
 
 
@@ -47,13 +74,24 @@ describe Checkout do
   end #end .new
 
   describe "#scan" do
-
     let(:checkout) do
       Checkout.new
     end
 
-    it "should add the item to the scanned_items array" do
+    context "when an item is scanned" do
+      it "should be added to the scanned_items in the checkout" do
+        checkout.scan(product1)
+        expect(checkout.scanned_items).to eq [product1]
+      end
+    end
 
+    context "when all items in basket1 are scanned" do
+      it "the scanned_items in the checkout should match the basket items" do
+        basket1.each do |item|
+          checkout.scan(item)
+        end
+        expect(checkout.scanned_items).to eq basket1
+      end
     end
 
   end #end #scan
