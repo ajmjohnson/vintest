@@ -16,8 +16,12 @@ class Checkout
   def total
     discounted_line_item_total = line_item_total + discount_on_line_item_total
 
-    "£#{discounted_line_item_total}"
+    discounted_order_total = (discounted_line_item_total + discount_total_on_order_total(discounted_line_item_total)).round(2)
+
+    "£#{discounted_order_total}"
   end
+
+
 
   private
 
@@ -51,6 +55,7 @@ class Checkout
     amount
   end
 
+  # if there is a discount it will be a negative number
   def discount_on_line_item_total
     total_discount = 0
 
@@ -68,14 +73,22 @@ class Checkout
     discount_per_item * no_of_promotion_items_scanned
   end
 
+  def discount_total_on_order_total(line_item_total_after_discount)
+    total_discount = 0
+      order_total_promotions.each do |promotion|
+        total_discount += promotion.adjustment_amount({line_item_total: line_item_total_after_discount})
+      end
+
+    total_discount
+  end
+
+
   def scanned_item_count_for_code(product_code)
     count = 0
 
     @scanned_items.each do |item|
       count += 1 if item.code == product_code
     end
-
-    puts "**** count #{count}"
 
     count
   end
